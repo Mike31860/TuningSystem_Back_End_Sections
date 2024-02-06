@@ -21,18 +21,17 @@ public class Main {
 	public static final String NASA_BENCHMARK = "Nasa";
 	public static final String TUNING = "Tuning";
 	public static final String TUNING_FLAG = "-Tuning_Analysis";
-	public static final String INLINING_EXPANTION="tinline=mode=1:depth:0:pragma=0:foronly=1:complement=0:functions=";
+	public static final String INLINING_EXPANTION = "tinline=mode=1:depth:0:pragma=0:foronly=1:complement=0:functions=";
 
 	private static Population population;
 	// private static boolean bestoptions;
-	//test
+	// test
 	private static ArrayList<String> combinations;
 
 	private static boolean bestoptions;
 	private static String nameApplication;
 	private static boolean isPoly = false;
 	private static String LoopId;
-	
 
 	public static void main(String[] args) throws IOException {
 		// TODO Auto-generated method stub
@@ -44,28 +43,27 @@ public class Main {
 		// System.out.print("Please write the application you want to apply the
 		// algorithm to: ");
 
-
- 		String algorithm = args[0];
+		String algorithm = args[0];
 		String benchMark = args[1];
 		nameApplication = args[2];
 		String className = args[3];
 		String tuningFlag = args[4];
-		String loopBegining=args[5];
-		String windowsSize = args[6]; 
+		String loopBegining = args[5];
+		String windowsSize = args[6];
 
 		if (benchMark.toLowerCase().equals(POLY_BENCHMARK.toLowerCase())) {
 			isPoly = true;
 		}
-		System.out.println("Entry4: " + algorithm + " " + benchMark + " " + nameApplication + " " + className+ " "+tuningFlag);
+		System.out.println(
+				"Entry4: " + algorithm + " " + benchMark + " " + nameApplication + " " + className + " " + tuningFlag);
 
 		if (algorithm.equals("3")) {
 
-			combinedElimination(nameApplication, className, algorithm, benchMark, tuningFlag, loopBegining,  windowsSize);
+			combinedElimination(nameApplication, className, algorithm, benchMark, tuningFlag, loopBegining,
+					windowsSize);
 		}
 
 	}
-
-
 
 	public static void bubbleSort(ArrayList<Chromosome> chrom) {
 		int n = chrom.size();
@@ -81,11 +79,6 @@ public class Main {
 		}
 
 	}
-
-	
-
-
-
 
 	static void saveValuesArray(int arr[], int n) {
 		String combination = "";
@@ -138,16 +131,19 @@ public class Main {
 
 	}
 
-	public static double valueSpeedUp(String nameApplication, String className, String algorithm, String loopBegining, String windowsSize) throws IOException {
+	public static double valueSpeedUp(String nameApplication, String className, String algorithm, String loopBegining,
+			String windowsSize) throws IOException {
 		String currentDir = System.getProperty("user.dir");
 		File file = null;
 		if (isPoly) {
 			file = new File(currentDir + "/PolyBenchC-4.2.1/" + nameApplication + "/logFiles/log_"
-					+ nameApplication.toLowerCase() + "_" + className + "_" + algorithm + "_" +loopBegining+ "_w_" +windowsSize+".txt");
+					+ nameApplication.toLowerCase() + "_" + className + "_" + algorithm + "_" + loopBegining + "_w_"
+					+ windowsSize + ".txt");
 		} else {
 
 			file = new File(currentDir + "/SNU_NPB-1.0.3/NPB3.3-SER-C/" + nameApplication + "/logFiles/log_"
-					+ nameApplication.toLowerCase() + "_" + className + "_" + algorithm + "_" +loopBegining+ "_w_" +windowsSize+ ".txt");
+					+ nameApplication.toLowerCase() + "_" + className + "_" + algorithm + "_" + loopBegining + "_w_"
+					+ windowsSize + ".txt");
 		}
 
 		BufferedReader br = new BufferedReader(new FileReader(file));
@@ -157,7 +153,7 @@ public class Main {
 			// System.out.println(st);
 			if (st.contains("TimeInstrument")) {
 				String[] speedup = st.replace(" ", "").split("=");
-				//System.out.println("-----"+speedup.toString());
+				// System.out.println("-----"+speedup.toString());
 				String[] loopName = speedup[0].split("-");
 				LoopId = loopName[1];
 				// for (int index = 0; index < speedup.length && speedup[index] != ""; index++)
@@ -166,22 +162,21 @@ public class Main {
 				// System.out.println("-----");
 				// }
 				result = speedup[1];
-				//System.out.println(speedup.toString());
-				//System.out.println("-----");
+				// System.out.println(speedup.toString());
+				// System.out.println("-----");
 			}
 		}
 		return Double.parseDouble(result);
 
 	}
 
-	
 	public static double callCetus(String techniques, String Path, String nameApplication, String className,
-			String algorithm, String loopBegining , String windowsSize) {
+			String algorithm, String loopBegining, String windowsSize) {
 
 		String loopId = loopBegining.replace("#", "_");
 		double defaultFitnessValue = 0.0;
 		ProcessBuilder processBuilder = new ProcessBuilder(Path, nameApplication.toUpperCase(),
-				nameApplication.toLowerCase(), techniques, className, algorithm, loopId, windowsSize );
+				nameApplication.toLowerCase(), techniques, className, algorithm, loopId, windowsSize);
 
 		// processBuilder.directory(new File(path));
 		try {
@@ -190,7 +185,7 @@ public class Main {
 			process.destroy();
 			defaultFitnessValue = valueSpeedUp(nameApplication, className, algorithm, loopId, windowsSize);
 
-			System.out.println("The Execution Time is: "+defaultFitnessValue);
+			System.out.println("The Execution Time is: " + defaultFitnessValue);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -201,7 +196,6 @@ public class Main {
 
 		return defaultFitnessValue;
 	}
-
 
 	public static void bubbleSortArray(ArrayList<Chromosome> list) {
 		int n = list.size();
@@ -226,11 +220,11 @@ public class Main {
 		String path = "";
 		String pathAnswer = "";
 		if (benchMark.toLowerCase().equals("poly")) {
-			//System.out.println("Is equal");
+			// System.out.println("Is equal");
 			path = currentDir + "/bashFiles/ScriptPoly.sh";
 			pathAnswer = currentDir + "/bashFiles/cetusAnswerPoly.sh";
 		} else {
-			//System.out.println("Not is equal");
+			// System.out.println("Not is equal");
 			path = currentDir + "/bashFiles/ScriptCombineElimination.sh";
 			pathAnswer = currentDir + "/bashFiles/cetusAnswer.sh";
 		}
@@ -238,38 +232,39 @@ public class Main {
 		String techniques = "";
 
 		if (tuningFlag.equals(TUNING)) {
-			techniques += "-alias=2 "+ TUNING_FLAG + "="+loopBegining+";"+windowsSize;
+			techniques += "-alias=2 " + TUNING_FLAG + "=" + loopBegining + ";" + windowsSize;
 		}
 
 		String aliasNumber = "0";
 		String loopIdInlining = loopBegining.replace("#0", "");
 		for (int i = 0; i < Integer.parseInt(windowsSize); i++) {
 			if (nameApplication.equals("UA")) {
-				techniques += ";alias#0=3,"+"induction#0=0,privatize#0=0,parallelize-loops#0=0,reduction#0=0,range#0=0";
+				techniques += ";alias#0=3,"
+						+ "induction#0=3,privatize#0=2,parallelize-loops#0=1,reduction#0=2,range#0=1";
 				aliasNumber = "3";
 			} else {
 				aliasNumber = "2";
-				if(i>0) {
-					techniques += "&alias#"+i+"=2,"+",induction#"+i+"=0,privatize#"+i+"=0,parallelize-loops#"+i+"=0,reduction#"+i+"=0,loop_interchange#"+i+"=0,range#"+i+"=0";
-					
-				}else {
-					techniques += ";alias#"+i+"=2,"+",induction#"+i+"=0,privatize#"+i+"=0,parallelize-loops#"+i+"=0,reduction#"+i+"=0,loop_interchange#"+i+"=0,range#"+i+"=0";	
+				if (i > 0) {
+					techniques += "&alias#" + i + "=2," +"tinline=mode=1:depth:0:pragma=0:foronly=1:complement=0:functions="+loopIdInlining+",induction#" + i + "=3,privatize#" + i
+							+ "=2,parallelize-loops#" + i + "=1,reduction#" + i + "=2,loop_interchange#" + i
+							+ "=1,range#" + i + "=1";
+
+				} else {
+					techniques += ";alias#" + i + "=2," +"tinline=mode=1:depth:0:pragma=0:foronly=1:complement=0:functions="+loopIdInlining+ ",induction#" + i + "=3,privatize#" + i
+							+ "=2,parallelize-loops#" + i + "=1,reduction#" + i + "=2,loop_interchange#" + i
+							+ "=1,range#" + i + "=1";
 				}
-				
+
 			}
 		}
-		
-		
-		
 
-		
-		double defualtET = callCetus(techniques, path, nameApplication, className, algorithm,loopBegining,windowsSize );
+		double defualtET = callCetus(techniques, path, nameApplication, className, algorithm, loopBegining,
+				windowsSize);
 
-//
+		//
 		ArrayList<String> eachTechnique = new ArrayList<String>(
-				Arrays.asList("induction","tinline", "privatize", "parallelize-loops", "reduction", "loop_interchange", "range"));
-
-
+				Arrays.asList("induction", "tinline", "privatize", "parallelize-loops", "reduction", "loop_interchange",
+						"range"));
 
 		Hashtable<Double, String> RENegative = new Hashtable<Double, String>();
 
@@ -277,34 +272,36 @@ public class Main {
 		if (tuningFlag.equals(TUNING)) {
 			tuningFlagTechnique += TUNING_FLAG;
 		}
-		
-		ArrayList<String> listOptimizationsWS= windowsSize(Integer.parseInt(windowsSize));
-		ArrayList<Technique> listTechniqueWithValues= windowsSizeTechniquewithValues(aliasNumber, Integer.parseInt(windowsSize),loopIdInlining);
-		
-		ArrayList<Technique> ASNWER = second(listOptimizationsWS, listTechniqueWithValues,  eachTechnique, RENegative, path, defualtET,
-				nameApplication, className, algorithm, tuningFlagTechnique, loopBegining, windowsSize );
 
-		//System.out.println(pathAnswer);
+		ArrayList<String> listOptimizationsWS = windowsSize(Integer.parseInt(windowsSize));
+		ArrayList<Technique> listTechniqueWithValues = windowsSizeTechniquewithValues(aliasNumber,
+				Integer.parseInt(windowsSize), loopIdInlining);
+
+		ArrayList<Technique> ASNWER = second(listOptimizationsWS, listTechniqueWithValues, eachTechnique, RENegative,
+				path, defualtET,
+				nameApplication, className, algorithm, tuningFlagTechnique, loopBegining, windowsSize);
+
+		// System.out.println(pathAnswer);
 		long finalTime = System.currentTimeMillis();
 		String timeTaken = (finalTime - startTime) + "";
 
-		writeAnswerFile(pathAnswer, nameApplication, ASNWER.toString()+" Windows Size: "+windowsSize, timeTaken, className, algorithm, windowsSize, loopBegining );
+		writeAnswerFile(pathAnswer, nameApplication, ASNWER.toString() + " Windows Size: " + windowsSize, timeTaken,
+				className, algorithm, windowsSize, loopBegining);
 
 	}
-	
-	public static ArrayList<String> windowsSize(int Wsize){
-		
+
+	public static ArrayList<String> windowsSize(int Wsize) {
+
 		ArrayList<String> listOptimizations = new ArrayList<String>();
-		 String optimizations ="";
 		for (int i = 0; i <= Wsize; i++) {
-			String optAlias="alias#"+i;
-			String inline="tinline";
-			String optInduction="induction#"+i;
-			String optPrivatization="privatize#"+i;
-			String optParallelize="parallelize-loops#"+i;
-			String optReduction="reduction#"+i;
-			String optLoopInter="loop_interchange#"+i;
-			String optRange="range#"+i;
+			String optAlias = "alias#" + i;
+			String inline = "tinline";
+			String optInduction = "induction#" + i;
+			String optPrivatization = "privatize#" + i;
+			String optParallelize = "parallelize-loops#" + i;
+			String optReduction = "reduction#" + i;
+			String optLoopInter = "loop_interchange#" + i;
+			String optRange = "range#" + i;
 			listOptimizations.add(optAlias);
 			listOptimizations.add(inline);
 			listOptimizations.add(optInduction);
@@ -314,26 +311,26 @@ public class Main {
 			listOptimizations.add(optLoopInter);
 			listOptimizations.add(optRange);
 		}
-		
+
 		return listOptimizations;
-		
+
 	}
-	
-   public static ArrayList<Technique> windowsSizeTechniquewithValues(String aliasNumber, int Wsize, String loopNameInline){
-		
+
+	public static ArrayList<Technique> windowsSizeTechniquewithValues(String aliasNumber, int Wsize,
+			String loopNameInline) {
+
 		ArrayList<Technique> listOptimizations = new ArrayList<Technique>();
 		for (int i = 0; i < Wsize; i++) {
-		
-			Technique alias=new Technique("alias#"+i, aliasNumber);
-			Technique inline= new Technique("tinline", "1", loopNameInline);
-			Technique induction=new Technique("induction#"+i, "3");
-			Technique privatization=new Technique("privatize#"+i, "2");
-			Technique parallelize=new Technique("parallelize-loops#"+i, "1");
-			Technique reduction=new Technique("reduction#"+i, "2");
-			Technique loopInter=new Technique("loop_interchange#"+i, "1");
-			Technique range=new Technique("range#"+i, "1");		
-			
-			
+
+			Technique alias = new Technique("alias#" + i, aliasNumber);
+			Technique inline = new Technique("tinline", "1", loopNameInline);
+			Technique induction = new Technique("induction#" + i, "3");
+			Technique privatization = new Technique("privatize#" + i, "2");
+			Technique parallelize = new Technique("parallelize-loops#" + i, "1");
+			Technique reduction = new Technique("reduction#" + i, "2");
+			Technique loopInter = new Technique("loop_interchange#" + i, "1");
+			Technique range = new Technique("range#" + i, "1");
+
 			listOptimizations.add(alias);
 			listOptimizations.add(inline);
 			listOptimizations.add(induction);
@@ -343,18 +340,19 @@ public class Main {
 			listOptimizations.add(loopInter);
 			listOptimizations.add(range);
 		}
-		
+
 		return listOptimizations;
-		
+
 	}
 
 	public static void writeAnswerFile(String Path, String nameApplication, String answer, String timeTaken,
 			String ClassName, String algorithm, String windowsSize, String loopBegining) {
-		
+
 		String loopId = LoopId.replace("#", "_");
 		String loopIdBegining = loopBegining.replace("#", "_");
 		ProcessBuilder processBuilder = new ProcessBuilder(Path, nameApplication.toUpperCase(),
-				nameApplication.toLowerCase(), answer, timeTaken, ClassName, algorithm, loopId, windowsSize, loopIdBegining);
+				nameApplication.toLowerCase(), answer, timeTaken, ClassName, algorithm, loopId, windowsSize,
+				loopIdBegining);
 		try {
 			Process process = processBuilder.start();
 			process.waitFor();
@@ -370,137 +368,106 @@ public class Main {
 
 	}
 
-	public static ArrayList<Technique> second(ArrayList<String> listOptimizations, ArrayList<Technique> listTechniqueWithValues, ArrayList<String> eachTechnique,
+	public static ArrayList<Technique> second(ArrayList<String> listOptimizations,
+			ArrayList<Technique> listTechniqueWithValues, ArrayList<String> eachTechnique,
 			Hashtable<Double, String> RENegative, String path, double defualtET, String nameApplication,
 			String className, String algorithm, String tuningFlag, String loopBegining, String windowsSize) {
-		
-		//System.out.println(listTechniqueWithValues.toString());
-		
+
+		// System.out.println(listTechniqueWithValues.toString());
+
 		RENegative = new Hashtable<Double, String>();
-		
-		for (int i = 1; i < 8*Integer.parseInt(windowsSize); i++) {
+
+		for (int i = 0; i < listTechniqueWithValues.size(); i++) {
+			String optimizationName = listTechniqueWithValues.get(i).getName();
 			String value = listTechniqueWithValues.get(i).getValue();
-			if(!listTechniqueWithValues.get(i).getName().startsWith("alias#")) {
-				
+			if (!optimizationName.startsWith("alias#") && !value.equals("0") ) {
+
 				listTechniqueWithValues.get(i).setValue("0");
-				String TechniquesComplete=techniquesCompleted(listTechniqueWithValues);
-				String TechniqueCompletedNoSpace=TechniquesComplete.replace(" ", "");
-				
-				String techniquesAll=tuningFlag+"="+loopBegining+";"+windowsSize+";"+TechniqueCompletedNoSpace+"";
-				double techiqueET = callCetus(techniquesAll, path,nameApplication, className, algorithm,loopBegining, windowsSize);
-				double RE = relativeImprovementPercentage(defualtET, techiqueET);
+				String TechniquesComplete = techniquesCompleted(listTechniqueWithValues);
+				String TechniqueCompletedNoSpace = TechniquesComplete.replace(" ", "");
+
+				String techniquesAll = tuningFlag + "=" + loopBegining + ";" + windowsSize + ";"
+						+ TechniqueCompletedNoSpace + "";
+				double techiqueET = callCetus(techniquesAll, path, nameApplication, className, algorithm, loopBegining,
+						windowsSize);
+				double RE = relativeImprovementPercentage(techiqueET, defualtET);
 				listTechniqueWithValues.get(i).setValue(value);
 				if (RE < 0) {
-					// error
-					RENegative.put(RE, listTechniqueWithValues.get(i).getName());
+					RENegative.put(RE, optimizationName);
 				}
-				
-				
+
 			}
-			
+
 		}
 		if (RENegative.size() != 0) {
-			List<Transformation> ETSorted = bubbleSort(RENegative);
-			//System.out.println(ETSorted.toString());
-			Third(listOptimizations, listTechniqueWithValues, eachTechnique, ETSorted, RENegative, path, nameApplication, listTechniqueWithValues, className,
-					algorithm, tuningFlag, loopBegining, windowsSize );
-		}
-		else{
-			for (int i = 0; i < listTechniqueWithValues.size(); i++) {
-				Technique element = listTechniqueWithValues.get(i);
-				 element.setValue("0");
-			}			
-		}
-
-//	for (int i = 1; i < 14; i++) {
-//		int value = techniqueWithValues.get(i).getValue();
-//		techniqueWithValues.get(i).setValue(0);
-//		String techniquesAll=tuningFlag+techniqueWithValues.toString().replace("[", "").replace("]", "").replace(",", "");
-//		double techiqueET = callCetus(techniquesAll, path,nameApplication, className, algorithm);
-//		double RE = relativeImprovementPercentage(defualtET, techiqueET);
-//		techniqueWithValues.get(i).setValue(value);
-//		if (RE < -1) {
-//			// error
-//			RENegative.put(RE, techniqueWithValues.get(i).getName());
-//		}
-//	}
-//	if (RENegative.size() != 0) {
-//		List<Transformation> ETSorted = bubbleSort(RENegative);
-//		System.out.println(ETSorted.toString());
-//		Third(eachTechnique, ETSorted, RENegative, path, nameApplication, techniqueWithValues, className,
-//				algorithm, tuningFlag );
-//	}
+			List<Transformation> ETSorted = SortingAlgorithm(RENegative);
+			// System.out.println(ETSorted.toString());
+			Third(listOptimizations, listTechniqueWithValues, eachTechnique, ETSorted, RENegative, path,
+					nameApplication, listTechniqueWithValues, className,
+					algorithm, tuningFlag, loopBegining, windowsSize);
+		} 
 
 		return listTechniqueWithValues;
 
 	}
-	
+
 	public static String techniquesCompleted(ArrayList<Technique> listTechniqueWithValues) {
-		String answer ="";
-		
+		String answer = "";
+
 		for (int i = 0; i < listTechniqueWithValues.size(); i++) {
 			Technique technique = listTechniqueWithValues.get(i);
-			
-			if(technique.getName().startsWith("range#")&&i+1==listTechniqueWithValues.size()) {
-				answer+=technique.getName()+"="+technique.getValue();
+
+			if (technique.getName().startsWith("range#") && i + 1 == listTechniqueWithValues.size()) {
+				answer += technique.getName() + "=" + technique.getValue();
+			} else {
+				answer += technique.toString() + ",";
 			}
-			else {
-				answer+=technique.toString()+",";
+
+			if (technique.getName().startsWith("range#") && i + 1 < listTechniqueWithValues.size()) {
+				answer += "&";
 			}
-			
-			if(technique.getName().startsWith("range#")&&i+1<listTechniqueWithValues.size()) {
-				answer+="&";
-			}
-			
+
 		}
-	
+
 		return answer;
-		
-		
+
 	}
 
-	public static void Third(ArrayList<String> listOptimizations, ArrayList<Technique> listTechniqueWithValues, ArrayList<String> eachTechnique, List<Transformation> ETSorted,
+	public static void Third(ArrayList<String> listOptimizations, ArrayList<Technique> listTechniqueWithValues,
+			ArrayList<String> eachTechnique, List<Transformation> ETSorted,
 			Hashtable<Double, String> RENegative, String path, String nameApplication,
-			ArrayList<Technique> techniqueWithValues, String className, String algorithm, String tuningFlag, String loopBegining, String windowsSize) {
-		
+			ArrayList<Technique> techniqueWithValues, String className, String algorithm, String tuningFlag,
+			String loopBegining, String windowsSize) {
+
 		delete(ETSorted.get(0).getName(), listOptimizations);
 		editTechnique(ETSorted.get(0).getName(), listTechniqueWithValues);
 		double defaultET = 0.0;
+
+		String techniquesAll = flagsEnableCetus(listTechniqueWithValues, tuningFlag, loopBegining, windowsSize);
+		defaultET = callCetus(techniquesAll, path, nameApplication, className, algorithm, loopBegining, windowsSize);
+
 		for (int i = 1; i < ETSorted.size(); i++) {
-			
-			String TechniquesComplete=techniquesCompleted(listTechniqueWithValues);
-			String TechniqueCompletedNoSpace=TechniquesComplete.replace(" ", "");
-			String techniquesAll=tuningFlag+"="+loopBegining+";"+windowsSize+";"+TechniqueCompletedNoSpace+"";
-			
-		//	String techniquesAll=tuningFlag+listTechniqueWithValues.toString().replace("[", "").replace("]", "").replace(",", "");
-			
-			defaultET = callCetus(techniquesAll,path, nameApplication, className, algorithm,loopBegining,windowsSize);
-			//System.out.println(defaultET);
-			double RE = relativeImprovementPercentage(defaultET, ETSorted.get(i).getValue());
+			double RE = relativeImprovementPercentage(ETSorted.get(i).getValue(), defaultET);
 			if (RE < 0) {
 				delete(ETSorted.get(i).getName(), listOptimizations);
 				editTechnique(ETSorted.get(i).getName(), listTechniqueWithValues);
 			}
 		}
+		techniquesAll = flagsEnableCetus(listTechniqueWithValues, tuningFlag, loopBegining, windowsSize);
+		defaultET = callCetus(techniquesAll, path, nameApplication, className, algorithm, loopBegining, windowsSize);
 
-		second(listOptimizations,listTechniqueWithValues , eachTechnique, RENegative, path, defaultET, nameApplication, className, algorithm, tuningFlag, loopBegining, windowsSize);	
-		
-	//	delete(ETSorted.get(0).getName(), eachTechnique);
-	//	editTechnique(ETSorted.get(0).getName(), techniqueWithValues);
-	//	double defaultET = 0.0;
-	//	for (int i = 1; i < ETSorted.size(); i++) {
-	//		String techniquesAll=tuningFlag+techniqueWithValues.toString().replace("[", "").replace("]", "").replace(",", "");
-	//		defaultET = callCetus(techniquesAll,path, nameApplication, className, algorithm);
-	//		System.out.println(defaultET);
-	//		double RE = relativeImprovementPercentage(defaultET, ETSorted.get(i).getValue());
-	//		if (RE < -1) {
-	//			delete(ETSorted.get(i).getName(), eachTechnique);
-	//			editTechnique(ETSorted.get(i).getName(), techniqueWithValues);
-	//		}
-	//	}
-    //
-	//	second(eachTechnique, techniqueWithValues, RENegative, path, defaultET, nameApplication, className, algorithm, tuningFlag);
+		second(listOptimizations, listTechniqueWithValues, eachTechnique, RENegative, path, defaultET, nameApplication,
+				className, algorithm, tuningFlag, loopBegining, windowsSize);
 
+	}
+
+	public static String flagsEnableCetus(ArrayList<Technique> listTechniqueWithValues, String tuningFlag, String loopBegining,
+			String windowsSize) {
+		String TechniquesComplete = techniquesCompleted(listTechniqueWithValues);
+		String TechniqueCompletedNoSpace = TechniquesComplete.replace(" ", "");
+		String techniquesAll = tuningFlag + "=" + loopBegining + ";" + windowsSize + ";" + TechniqueCompletedNoSpace
+				+ "";
+		return techniquesAll;
 	}
 
 	public static void delete(String ETtechniqueName, ArrayList<String> eachTechnique) {
@@ -511,7 +478,7 @@ public class Main {
 		}
 	}
 
-	public static double relativeImprovementPercentage(double defaultET, double techiqueET) {
+	public static double relativeImprovementPercentage(double techiqueET, double defaultET) {
 
 		double result = ((techiqueET - defaultET) / defaultET) * 100;
 		return result;
@@ -536,30 +503,17 @@ public class Main {
 
 	}
 
-	//Sorting descending
-	public static List<Transformation> bubbleSort(Hashtable<Double, String> RENegative) {
+	// Sorting descending
+	public static List<Transformation> SortingAlgorithm(Hashtable<Double, String> RENegative) {
 		List<Double> list = new ArrayList<Double>();
 		list.addAll(RENegative.keySet());
-		
-		Double[] RIPS = (Double[]) RENegative.keySet().toArray(); 
-        Arrays.sort(RIPS);
-	
-		double temp;
-		boolean sorted = false;
-		while (!sorted) {
-			sorted = true;
-			for (int i = 0; i < list.size() - 1; i++) {
-				if (list.get(i) > list.get(i + 1)) {
-					temp = list.get(i);
-					list.set(i, list.get(i + 1));
-					list.set(i + 1, temp);
-					sorted = false;
-				}
-			}
-		}
+
+		Double[] RIPS = RENegative.keySet().toArray(new Double[0]);
+		Arrays.sort(RIPS);
+
 		List<Transformation> transformations = new ArrayList<Transformation>();
-		for (int i = 0; i < list.size(); i++) {
-			Transformation trans = new Transformation(RENegative.get(list.get(i)), list.get(i));
+		for (int i = 0; i < RIPS.length; i++) {
+			Transformation trans = new Transformation(RENegative.get(RIPS[i]), RIPS[i]);
 			transformations.add(trans);
 		}
 
