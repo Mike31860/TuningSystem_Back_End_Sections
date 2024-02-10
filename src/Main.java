@@ -35,7 +35,6 @@ public class Main {
 
 	public static void main(String[] args) throws IOException {
 		// TODO Auto-generated method stub
-
 		// System.out.print("Please choose what you want to do: \n (1) Genetic Algorithm
 		// \n (2) Exhaustive Search \n (3) Combine Elimnation");
 		// BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
