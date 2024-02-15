@@ -10,6 +10,7 @@
             "name": "Current File",
             "request": "launch",
             "mainClass": "${file}",
+            "args": "3 Nasa BT A Tuning Compute_rhs#0 2",
         },
         {
             "type": "java",
@@ -17,6 +18,7 @@
             "request": "launch",
             "mainClass": "Main",
             "projectName": "TuningLocalJasonLoop",
+            "args": "3 Nasa BT A Tuning Compute_rhs#0 2",
             "pathMappings": [
                 {
                     "localRoot": "${workspaceFolder}",

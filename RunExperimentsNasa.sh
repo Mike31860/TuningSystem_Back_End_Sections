@@ -17,5 +17,5 @@ if [[ "${BENCH_NAME}" == "Nasa" ]];
         make CLASS=${CLASS_NAME}
         cd ../../../
 fi        
-java -jar TS_test.jar $ALGORITHM $BENCH_NAME $APPLICATION_NAME $CLASS_NAME $TUNING_FLAG $LOOP_BEGINING $WINDOWS_SIZE
+java -jar TuningSystem_Jason.jar $ALGORITHM $BENCH_NAME $APPLICATION_NAME $CLASS_NAME $TUNING_FLAG $LOOP_BEGINING $WINDOWS_SIZE
 #./RunExperimentsFinal.sh 3 Poly 2mm N
